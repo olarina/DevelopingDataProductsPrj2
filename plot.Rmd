@@ -1,0 +1,24 @@
+---
+title: "Untitled7"
+author: "Olga Larina"
+date: "8/29/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Slide
+```{r, message=F, fig.cap= "Source: mtcars"}
+library(ggplot2)
+library(plotly)
+theme_set(theme_classic())
+
+g = ggplot(mtcars, aes(mpg))
+g = g + geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
+    labs(title="Density plot", 
+         subtitle="Miles per gallon(MPG)",
+         x="MPG")
+ggplotly(g)
+```
