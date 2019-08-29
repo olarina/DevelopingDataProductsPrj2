@@ -1,5 +1,5 @@
 ---
-title: "Untitled7"
+title: "Density plot: miles per gallon"
 author: "Olga Larina"
 date: "8/29/2019"
 output: ioslides_presentation
@@ -19,6 +19,7 @@ g = ggplot(mtcars, aes(mpg))
 g = g + geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
     labs(title="Density plot", 
          subtitle="Miles per gallon(MPG)",
-         x="MPG")
+         x="MPG",
+         fill = "Cylinders")
 ggplotly(g)
 ```
