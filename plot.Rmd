@@ -14,12 +14,11 @@ knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
 library(plotly)
 theme_set(theme_classic())
-
-g = ggplot(mtcars, aes(mpg))
-g = g + geom_density(aes(fill=factor(cyl), color = factor(cyl)), alpha=0.5) + 
+mtcars$cyl = as.factor(mtcars$cyl)
+g = ggplot(mtcars, aes(x=mpg,fill=cyl,color = cyl)) +
+    geom_density(alpha=0.5) + 
     labs(title = "Made with plotly and ggplot",
-         x= "MPG",
-         fill = "Cylinders")
+         x= "MPG")
 ggplotly(g)
 ```
 
@@ -27,10 +26,9 @@ ggplotly(g)
 ```{r}
 library(broom)
 legendTitle = list(text = "Cylinders", xref="paper", yref="paper",
-                   x=1.10, y=1.05,
+                   x=1.1, y=1.05,
                    showarrow=FALSE)
 ls = loess(mpg ~ hp, data = mtcars, span = 0.8)
-mtcars$cyl = as.factor(mtcars$cyl)
 plot_ly(mtcars, x = ~hp, y = ~mpg, type = "scatter", mode = "markers", color = mtcars$cyl) %>%
     add_markers(hoverinfo = "text",
                 text = ~paste("hp: ",hp, "\nmpg: ", mpg, "\ncyl: ", cyl, "\n", rownames(mtcars)),
