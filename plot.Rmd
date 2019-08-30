@@ -16,7 +16,7 @@ library(plotly)
 theme_set(theme_classic())
 
 g = ggplot(mtcars, aes(mpg))
-g = g + geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
+g = g + geom_density(aes(fill=factor(cyl), color = factor(cyl)), alpha=0.5) + 
     labs(title = "Made with plotly and ggplot",
          x= "MPG",
          fill = "Cylinders")
