@@ -1,5 +1,5 @@
 ---
-title: "Density plot: miles per gallon"
+title: "Mtcars: density and mpg~hp dependency"
 author: "Olga Larina"
 date: "8/29/2019"
 output: ioslides_presentation
@@ -9,7 +9,7 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Slide
+## MPG density plot
 ```{r, message=F, fig.cap= "Source: mtcars"}
 library(ggplot2)
 library(plotly)
@@ -17,9 +17,34 @@ theme_set(theme_classic())
 
 g = ggplot(mtcars, aes(mpg))
 g = g + geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
-    labs(title="Density plot", 
-         subtitle="Miles per gallon(MPG)",
-         x="MPG",
+    labs(title = "Made with plotly and ggplot",
+         x= "MPG",
          fill = "Cylinders")
 ggplotly(g)
 ```
+
+## MPG~HP
+```{r}
+library(broom)
+legendTitle = list(text = "Cylinders", xref="paper", yref="paper",
+                   x=1.10, y=1.05,
+                   showarrow=FALSE)
+ls = loess(mpg ~ hp, data = mtcars, span = 0.8)
+mtcars$cyl = as.factor(mtcars$cyl)
+plot_ly(mtcars, x = ~hp, y = ~mpg, type = "scatter", mode = "markers", color = mtcars$cyl) %>%
+    add_markers(hoverinfo = "text",
+                text = ~paste("hp: ",hp, "\nmpg: ", mpg, "\ncyl: ", cyl, "\n", rownames(mtcars)),
+                showlegend = F) %>%
+     add_lines(data = augment(ls),
+               y = ~.fitted,
+               name = "Loess Smoother", showlegend = F) %>%
+    add_ribbons(data = augment(ls),
+                ymin = ~.fitted - 1.96 * .se.fit,
+                ymax = ~.fitted + 1.96 * .se.fit,
+                name = "SE", showlegend = F) %>%
+    layout(annotations = legendTitle)
+```
+
+
+
+
